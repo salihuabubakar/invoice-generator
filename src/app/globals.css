@@ -16,18 +16,330 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-image: linear-gradient(90deg, #233e52, #2a77ad);
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+body {
+  background: linear-gradient(90deg, #6bbdf7, #0078cc);
+  background-size: cover;
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  body {
+    background: linear-gradient(90deg, #6bbdf7, #0078cc);
+    background-size: contain;
+    background-attachment: fixed;
   }
 }
+
+.screen {		
+  background: linear-gradient(90deg, #4190c8, #30a8fd);		
+	position: relative;	
+	height: 600px;
+	width: 360px;	
+	box-shadow: 0px 0px 24px #0e2f47;
+}
+
+.logo-container {
+  width: 80%;
+  z-index: 500;
+  position: relative;
+}
+
+.logo {
+  width: inherit;
+}
+
+.screen__content {
+	z-index: 1;
+	position: relative;
+}
+
+.screen__background {		
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 0;
+	-webkit-clip-path: inset(0 0 0 0);
+	clip-path: inset(0 0 0 0);	
+}
+
+.screen__background__shape {
+	transform: rotate(45deg);
+	position: absolute;
+}
+
+.screen__background__shape1 {
+	height: 520px;
+	width: 520px;
+	background: #FFF;	
+	top: -50px;
+	right: 120px;	
+	border-radius: 0 72px 0 0;
+}
+
+.screen__background__shape2 {
+	height: 220px;
+	width: 220px;
+	background: #0581da;	
+	top: -172px;
+	right: 0;	
+	border-radius: 32px;
+}
+
+.screen__background__shape3 {
+	height: 540px;
+	width: 190px;
+	background: linear-gradient(90deg, #233e52, #2a77ad);
+	top: -24px;
+	right: 0;	
+	border-radius: 32px;
+}
+
+.screen__background__shape4 {
+	height: 400px;
+	width: 200px;
+	background: #0581da;	
+	top: 420px;
+	right: 50px;	
+	border-radius: 60px;
+}
+
+.login {
+	width: 320px;
+	padding: 10px;
+}
+
+.login__field {
+	padding: 20px 0px;	
+	position: relative;	
+}
+
+
+.login__input {
+	border: none;
+	border-bottom: 2px solid #D1D1D4;
+	background: none;
+	padding: 10px;
+	padding-left: 24px;
+	font-weight: 700;
+	width: 75%;
+	transition: .2s;
+}
+
+.login__input:active,
+.login__input:focus,
+.login__input:hover {
+	outline: none;
+	border-bottom-color: #0581da;
+}
+
+.login__submit {
+	background: #fff;
+	font-size: 14px;
+	margin-top: 30px;
+	padding: 16px 20px;
+	border-radius: 26px;
+	border: 1px solid #D4D3E8;
+	text-transform: uppercase;
+	font-weight: 700;
+  text-align: center;
+	width: 100%;
+	color: #0581da;
+	box-shadow: 0px 2px 2px #0581da;
+	cursor: pointer;
+	transition: .2s;
+}
+
+.login__submit:active,
+.login__submit:focus,
+.login__submit:hover {
+	border-color: #0581da;
+	outline: none;
+}
+
+/* Dashboard */
+
+.dashboard {
+  background-color: #FFFFFF;
+  margin: 5%;
+  padding: 1.5%;
+  color: #000;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 1119px) {
+  .dashboard {
+    margin-top: 8%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .dashboard {
+    margin-top: 15%;
+    margin-right: 1%;
+    margin-left: 1%;
+  }
+}
+
+.add_invoice_div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+}
+
+.add_invoice_btn {
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  -webkit-box-shadow: 5px 6px 9px #666666;
+  -moz-box-shadow: 5px 6px 9px #666666;
+  box-shadow: 5px 6px 9px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 11px 20px 10px 20px;
+  text-decoration: none;
+  margin-bottom: 2px;
+}
+
+.add_invoice_btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
+}
+
+/* End Dashboard */
+
+
+/* Header */
+
+.topnav {
+  overflow: hidden;
+  background-color: #f2f2f2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+
+.Headerlogo {
+  width: 100%;
+}
+
+
+ul {
+  display: flex;
+  list-style: none;
+  padding: unset;
+  margin: unset;
+}
+
+li {
+  padding: 14px;
+  transition: all linear 0.3s;
+}
+
+li:hover {
+  cursor: pointer;
+  color: #fff;
+}
+
+.dropdown-menu {
+  box-shadow: 0px 10px 30px 0px rgba(82, 63, 105, 0.05);
+  transition: all linear 0.3s;
+  z-index: 500;
+  position: relative;
+}
+
+/* Header End */
+
+/* Table */
+
+.table_wrapper {
+  overflow-x: auto;
+}
+
+.table_wrapper::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+
+.table_wrapper::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+.table_wrapper::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background-image: linear-gradient(90deg, #233e52, #2a77ad);
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+}
+
+table {
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+
+th {
+  font-weight: 600!important;
+}
+
+/* th, td {
+  border: 1px solid #96d4d4;
+} */
+
+button {
+  margin: 5px;
+}
+
+.pageBtns {
+  background-color: yellow;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Table End */
