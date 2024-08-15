@@ -22,6 +22,8 @@ const style = {
   border: '2px solid #0b5688',
   boxShadow: 24,
   p: 4,
+  maxHeight: '90vh',
+  overflowY: 'auto',
   '& .MuiTextField-root': { m: 1, width: '27ch' }
 };
 
