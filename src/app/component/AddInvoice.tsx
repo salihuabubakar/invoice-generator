@@ -190,6 +190,15 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
             autoComplete="off"
             onSubmit={handleSubmit}
           >
+            <div className='flex justify-end'>
+              <button
+                onClick={handleClose}
+                type="button"
+                className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-input bg-[#FE4066] shadow-md hover:bg-[#f75878] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
+              >
+                X
+              </button>
+            </div>
             <Typography className='text-center' id="transition-modal-title" variant="h6" component="h2">
               {docId ? 'Edit' : 'Add'} Invoice
             </Typography>
