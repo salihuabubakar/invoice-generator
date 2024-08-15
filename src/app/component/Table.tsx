@@ -189,129 +189,135 @@ const Table = () =>{
           </tr>
         </thead>
         <tbody className='[&_tr:last-child]:border-0'>
-          {documents
-            .filter(
-              (doc) =>
-                doc.customer_id.toLowerCase().includes(search) ||
-                doc.name.toLowerCase().includes(search) ||
-                doc.email.toLowerCase().includes(search)
-            )
-            .slice(indexOfFirstPost, indexOfLastPost) //Table (startFrom, endFrom )
-            .map((docs: DocData, index: number) => {
-              const { 
-                $id, name, customer_id, phone_number, 
-                email, address, date, valid_until, 
-                description_of_work, quote, items_description, 
-                items_price, items_quantity, items_unit
-              } = docs;
-              return (
-                <tr 
-                  className='border-b'
-                  key={docs.$id}>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                      {$id}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                      {customer_id}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
-                      {name}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
-                      {phone_number}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
-                      {email}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                      {address}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[8.25rem] truncate font-medium ${poppins.className}`}>
-                      {dateFormatter(date)}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[8.25rem] truncate font-medium ${poppins.className}`}>
-                      {dateFormatter(valid_until)}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                      {quote}
-                    </td>
-                    <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                      {description_of_work}
-                    </td>
-                    <td 
-                      className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
-                      style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
-                      >
-                        {items_description?.map((data, index) => (
-                          <span key={index}>
-                            {data}
-                            <br />
-                          </span>
-                        ))}
-                    </td>
-                    <td 
-                      className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
-                      style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
-                      >
-                        {items_quantity?.map((data, index) => (
-                          <span key={index}>
-                            {data}
-                            <br />
-                          </span>
-                        ))}
-                    </td>
-                    <td 
-                      className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
-                      style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
-                      >
-                        {items_unit?.map((data, index) => (
-                          <span key={index}>
-                            {data}
-                            <br />
-                          </span>
-                        ))}
-                    </td>
-                    <td 
-                      className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
-                      style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
-                      >
-                        {items_price?.map((data: any, index) => (
-                          <span key={index}>
-                            {Number.isInteger(data) ? data.toFixed(2) : data}
-                            <br />
-                          </span>
-                        ))}
-                    </td>
-                    <td 
-                      className='p-2 align-middle text-left text-sm truncate font-medium'
-                      style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
-                      >
-                        <button
-                          onClick={() => handleEdit($id, index)}
-                          className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
-                          >
-                            Edit
-                        </button>
-                        <button
-                          onClick={() => { 
-                            confirm("Are you sure you want to delete this invoice?");
-                            dispatch(deleteDocument($id));
-                            toast.success('Deleted Successfully')
-                          }}
-                          className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#FE4066] shadow-md hover:bg-[#f75878] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
-                          >
-                            Delete
-                        </button>
-                        <button
-                          onClick={() => alert("Coming Soon..")}
-                          className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
-                          >
-                            Print
-                        </button>
-                    </td>
-                </tr>
+          {documents && documents?.length !== 0 ? (
+            <>
+              {documents
+              .filter(
+                (doc) =>
+                  doc.customer_id.toLowerCase().includes(search) ||
+                  doc.name.toLowerCase().includes(search) ||
+                  doc.email.toLowerCase().includes(search)
               )
-            })}
+              .slice(indexOfFirstPost, indexOfLastPost) //Table (startFrom, endFrom )
+              .map((docs: DocData, index: number) => {
+                const { 
+                  $id, name, customer_id, phone_number, 
+                  email, address, date, valid_until, 
+                  description_of_work, quote, items_description, 
+                  items_price, items_quantity, items_unit
+                } = docs;
+                return (
+                  <tr 
+                    className='border-b'
+                    key={docs.$id}>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
+                        {$id}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
+                        {customer_id}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
+                        {name}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
+                        {phone_number}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
+                        {email}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
+                        {address}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[8.25rem] truncate font-medium ${poppins.className}`}>
+                        {dateFormatter(date)}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[8.25rem] truncate font-medium ${poppins.className}`}>
+                        {dateFormatter(valid_until)}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
+                        {quote}
+                      </td>
+                      <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
+                        {description_of_work}
+                      </td>
+                      <td 
+                        className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
+                        style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
+                        >
+                          {items_description?.map((data, index) => (
+                            <span key={index}>
+                              {data}
+                              <br />
+                            </span>
+                          ))}
+                      </td>
+                      <td 
+                        className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
+                        style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
+                        >
+                          {items_quantity?.map((data, index) => (
+                            <span key={index}>
+                              {data}
+                              <br />
+                            </span>
+                          ))}
+                      </td>
+                      <td 
+                        className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
+                        style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
+                        >
+                          {items_unit?.map((data, index) => (
+                            <span key={index}>
+                              {data}
+                              <br />
+                            </span>
+                          ))}
+                      </td>
+                      <td 
+                        className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
+                        style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
+                        >
+                          {items_price?.map((data: any, index) => (
+                            <span key={index}>
+                              {Number.isInteger(data) ? data.toFixed(2) : data}
+                              <br />
+                            </span>
+                          ))}
+                      </td>
+                      <td 
+                        className='p-2 align-middle text-left text-sm truncate font-medium'
+                        style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
+                        >
+                          <button
+                            onClick={() => handleEdit($id, index)}
+                            className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
+                            >
+                              Edit
+                          </button>
+                          <button
+                            onClick={() => { 
+                              confirm("Are you sure you want to delete this invoice?");
+                              dispatch(deleteDocument($id));
+                              toast.success('Deleted Successfully')
+                            }}
+                            className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#FE4066] shadow-md hover:bg-[#f75878] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
+                            >
+                              Delete
+                          </button>
+                          <button
+                            onClick={() => alert("Coming Soon..")}
+                            className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
+                            >
+                              Print
+                          </button>
+                      </td>
+                  </tr>
+                )
+              })}
+            </>
+          ) : (
+            <tr className='flex justify-center'><td className='flex justify-center'>No content to show</td></tr>
+          )}
         </tbody>
       </table>
       </div>
