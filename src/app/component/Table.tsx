@@ -373,10 +373,11 @@ const Table = () =>{
                           </button>
                           <button
                             title='Delete'
-                            onClick={() => { 
-                              confirm("Are you sure you want to delete this invoice?");
-                              dispatch(deleteDocument($id));
-                              toast.success('Deleted Successfully')
+                            onClick={() => {
+                              if (confirm("Are you sure you want to delete this invoice?")) {
+                                dispatch(deleteDocument($id));
+                                toast.success('Deleted Successfully');
+                              }
                             }}
                             className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#FE4066] shadow-md hover:bg-[#f75878] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
                             >
