@@ -12,6 +12,7 @@ import { openModal } from '@/lib/slices/modalSlice';
 import EmailTemplate from './EmailTemplate';
 import { render } from '@react-email/components';
 import axios from 'axios';
+import PopUpText from './PopUpText';
 
 
 interface EmailTemplateProps {
@@ -283,34 +284,34 @@ const Table = () =>{
                     className='border-b'
                     key={$id}>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        {$id}
+                        <PopUpText text={$id} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        {customer_id}
+                        <PopUpText text={customer_id} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
-                        {name}
+                        <PopUpText text={name} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
-                        {phone_number}
+                        <PopUpText text={phone_number} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}>
-                        {email}
+                        <PopUpText text={email} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        {address}
+                        <PopUpText text={address} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[8.25rem] truncate font-medium ${poppins.className}`}>
-                        {dateFormatter(date)}
+                        <PopUpText text={dateFormatter(date)} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[8.25rem] truncate font-medium ${poppins.className}`}>
-                        {dateFormatter(valid_until)}
+                        <PopUpText text={dateFormatter(valid_until)} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        {quote}
+                        <PopUpText text={quote} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        {description_of_work}
+                        <PopUpText text={description_of_work} />
                       </td>
                       <td 
                         className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
@@ -318,7 +319,7 @@ const Table = () =>{
                         >
                           {items_description?.map((data, index) => (
                             <span key={index}>
-                              {data}
+                              <PopUpText text={data} />
                               <br />
                             </span>
                           ))}
@@ -329,7 +330,7 @@ const Table = () =>{
                         >
                           {items_quantity?.map((data, index) => (
                             <span key={index}>
-                              {data}
+                              <PopUpText text={data} />
                               <br />
                             </span>
                           ))}
@@ -340,7 +341,7 @@ const Table = () =>{
                         >
                           {items_unit?.map((data, index) => (
                             <span key={index}>
-                              {data}
+                              <PopUpText text={data} />
                               <br />
                             </span>
                           ))}
@@ -351,7 +352,7 @@ const Table = () =>{
                         >
                           {items_price?.map((data: any, index) => (
                             <span key={index}>
-                              {Number.isInteger(data) ? data.toFixed(2) : data}
+                              <PopUpText text={Number.isInteger(data) ? data.toFixed(2) : data} />
                               <br />
                             </span>
                           ))}

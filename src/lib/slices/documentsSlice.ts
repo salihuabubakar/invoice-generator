@@ -20,8 +20,8 @@ export const createDocument = createAsyncThunk(
   async (documentData: any, { rejectWithValue }) => {
     try {
       const response = await databases.createDocument(
-        '66b8157100055f93735c',
-        '66b8158c001b36a48c99',
+        process.env.NEXT_PUBLIC_APPWRITE_DB_ID as string,
+        process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID as string,
         ID.unique(),
         documentData
       );
@@ -44,8 +44,8 @@ export const updateDocument = createAsyncThunk(
   ) => {
     try {
       const response = await databases.updateDocument(
-        '66b8157100055f93735c',
-        '66b8158c001b36a48c99',
+        process.env.NEXT_PUBLIC_APPWRITE_DB_ID as string,
+        process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID as string,
         documentId,
         documentData
       );
@@ -64,7 +64,7 @@ export const deleteDocument = createAsyncThunk(
   'documents/deleteDocument',
   async (documentId: string, { rejectWithValue }) => {
     try {
-      await databases.deleteDocument('66b8157100055f93735c', '66b8158c001b36a48c99', documentId);
+      await databases.deleteDocument(process.env.NEXT_PUBLIC_APPWRITE_DB_ID as string, process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID as string, documentId);
       return documentId;
     } catch (error) {
       if (error instanceof AppwriteException) {

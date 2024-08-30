@@ -53,9 +53,7 @@ interface AddInvoiceProps {
 
 const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispatch }) => {
 
-  const isModalOpen = useAppSelector((state) => state.modal.open); 
-
-  console.log("docId", docId, "docIndex", docIndex, "existingData", existingData);
+  const isModalOpen = useAppSelector((state) => state.modal.open);
 
   const [open, setOpen] = useState(isModalOpen);
   const [customerId, setCustomerId] = useState(existingData?.[docIndex]?.customer_id || '');
@@ -75,7 +73,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
   const handleClose = () => {
     setOpen(dispatch(closeModal()));
     setCustomerId('');
-    setName('hi');
+    setName('');
     setPhoneNumber('');
     setEmail('');
     setAddress('');
@@ -87,7 +85,6 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
     setItemsQuantity([]);
     setItemsUnit(['']);
     setItemsPrice([]);
-    console.log("close", "name", name)
   }
 
   const prevDate = existingData?.[docIndex]?.date;

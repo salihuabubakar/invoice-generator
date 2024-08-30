@@ -1,16 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { account, AppwriteException } from "./appwrite";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-toastify';
+import getCurrentUser from "../hook/getCurrentUser";
 
 const LoginPage = () => {
   const router = useRouter();
+  const { currentUser } = getCurrentUser();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push('/dashboard');
+    }
+  }, [currentUser, router]);
 
   const login = async (email: string, password: string) => {
     try {

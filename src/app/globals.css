@@ -261,6 +261,12 @@ body {
   top: 0;
 }
 
+@media screen and (max-width: 720px) {
+  header strong {
+    font-size: 10px !important;
+  }
+}
+
 .Headerlogo {
   width: 100%;
 }

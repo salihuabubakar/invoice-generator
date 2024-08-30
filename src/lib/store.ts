@@ -2,10 +2,12 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 // Import your slices here
 import ducumentsReducer from './slices/documentsSlice';
 import modalReducer from './slices/modalSlice';
+import profileModalSlice from './slices/profileModalSlice';
 
 const rootReducer = combineReducers({
   ducuments: ducumentsReducer,
-  modal: modalReducer
+  modal: modalReducer,
+  profileModal: profileModalSlice
 });
 
 export const store = configureStore({
