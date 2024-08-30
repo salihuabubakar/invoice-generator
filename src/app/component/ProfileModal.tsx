@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { useAppSelector } from '../../lib/hooks';
 import { closeProfile } from '@/lib/slices/profileModalSlice';
 import getCurrentUser from "../../hook/getCurrentUser";
+import { updateProfile } from '@/lib/slices/profileSlice';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -32,39 +33,50 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
 
   const isProfileModalOpen = useAppSelector((state) => state.profileModal.open);
   const { currentUser } = getCurrentUser();
+  const { loading, error } = useAppSelector((state) => state.profile);
 
   const [open, setOpen] = useState(isProfileModalOpen);
   const [name, setName] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [oldPassword, setOldPassword] = useState('');
 
   useEffect(() => {
     if (currentUser) {
       setName(currentUser.name || '');
-      setPhoneNumber(currentUser.phone || '');
+      setPhone(currentUser.phone || '');
       setEmail(currentUser.email || '');
     }
   }, [currentUser]);
 
   const handleClose = () => {
-    setOpen(dispatch(closeProfile()));
     setName('');
-    setPhoneNumber('');
+    setPhone('');
     setEmail('');
     setPassword('');
+    setOldPassword('');
+    setOpen(dispatch(closeProfile()));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name || !phoneNumber || !email || !password) {
+    if (!name || !phone || !email || !oldPassword) {
       alert('Please fill out all required fields.');
       return;
     }
-
-    // Dispatch your updateDocument action here
-
-    toast.success("Profile updated");
+    try {
+      await dispatch(updateProfile({ 
+        name,
+        email,
+        phone,
+        password,
+        oldPassword
+      })).unwrap();
+      toast.success('Profile updated successfully!');
+    } catch (err) {
+      toast.error(`Failed to update profile: ${error}`);
+    }
     handleClose();
   };
 
@@ -126,9 +138,19 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
                   required
                   label="Phone Number"
                   size='small'
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
+                <TextField
+                  required
+                  label="Current Password"
+                  size='small'
+                  type='password'
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+              </div>
+              {/* <div>
                 <TextField
                   required
                   label="New Password"
@@ -137,14 +159,14 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </div>
+              </div> */}
             </div>
             <div className='flex justify-center'>
               <button
                 type="submit"
                 className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
               >
-                Save
+                {loading ? 'loading...' : 'Save'}
               </button>
             </div>
           </Box>

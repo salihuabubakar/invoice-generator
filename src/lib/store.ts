@@ -3,11 +3,13 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import ducumentsReducer from './slices/documentsSlice';
 import modalReducer from './slices/modalSlice';
 import profileModalSlice from './slices/profileModalSlice';
+import profileSlice from './slices/profileSlice';
 
 const rootReducer = combineReducers({
   ducuments: ducumentsReducer,
   modal: modalReducer,
-  profileModal: profileModalSlice
+  profileModal: profileModalSlice,
+  profile: profileSlice
 });
 
 export const store = configureStore({

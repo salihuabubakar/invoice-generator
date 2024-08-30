@@ -71,7 +71,6 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
   const [itemsPrice, setItemsPrice] = useState(existingData?.[docIndex]?.items_price || []);
 
   const handleClose = () => {
-    setOpen(dispatch(closeModal()));
     setCustomerId('');
     setName('');
     setPhoneNumber('');
@@ -85,6 +84,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
     setItemsQuantity([]);
     setItemsUnit(['']);
     setItemsPrice([]);
+    setOpen(dispatch(closeModal()));
   }
 
   const prevDate = existingData?.[docIndex]?.date;
