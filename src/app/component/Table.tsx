@@ -187,7 +187,7 @@ const Table = () =>{
         <thead className=''>
           <tr className='border-b'>
             <th className="text-left font-medium px-3 text-xs h-8"> 
-              <div>ID</div>
+              <div>SN</div>
             </th>
             <th className="text-left font-medium px-3 text-xs h-8"> 
               <div>Customer ID</div>
@@ -256,7 +256,7 @@ const Table = () =>{
                     className='border-b'
                     key={$id}>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        <PopUpText text={$id} />
+                        <PopUpText text={index + 1} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
                         <PopUpText text={customer_id} />
