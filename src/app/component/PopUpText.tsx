@@ -9,6 +9,9 @@ export default function PopUpText({ text }: any ){
         mouseLeaveDelay={100}
         hoverable={true}
         content={text}
+        style={{
+          border: "1px solid #3cb0fd",
+        }}
         trigger={
           <span
             style={{

@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../lib/hooks';
 import { createDocument, updateDocument } from '@/lib/slices/documentsSlice';
 import { closeModal } from '@/lib/slices/modalSlice';
 import { toast } from 'react-toastify';
-import { dateFormatter } from '@/utils/data_types';
+import { dateFormatter, generateShortId } from '@/utils/data_types';
 
 
 const style = {
@@ -40,23 +40,23 @@ interface FormData {
   description_of_work: string;
   items_description: string[];
   items_quantity: number[];
-  items_unit: string[];
-  items_price: number[];
+  items_unit: number[];
+  items_amount: number[];
 }
 
 interface AddInvoiceProps {
   existingData?: any;
   docId: string;
   dispatch: any;
-  docIndex: number | string
+  docIndex: number | string;
+  documents: any;
 }
 
-const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispatch }) => {
+const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispatch, documents }) => {
 
   const isModalOpen = useAppSelector((state) => state.modal.open);
 
   const [open, setOpen] = useState(isModalOpen);
-  const [customerId, setCustomerId] = useState(existingData?.[docIndex]?.customer_id || '');
   const [name, setName] = useState(existingData?.[docIndex]?.name || '');
   const [phoneNumber, setPhoneNumber] = useState(existingData?.[docIndex]?.phone_number || '');
   const [email, setEmail] = useState(existingData?.[docIndex]?.email || '');
@@ -67,11 +67,18 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
   const [descOfWork, setDescOfWork] = useState(existingData?.[docIndex]?.description_of_work || '');
   const [itemsDesc, setItemsDesc] = useState(existingData?.[docIndex]?.items_description || ['']);
   const [itemsQuantity, setItemsQuantity] = useState(existingData?.[docIndex]?.items_quantity || []);
-  const [itemsUnit, setItemsUnit] = useState(existingData?.[docIndex]?.items_unit || ['']);
-  const [itemsPrice, setItemsPrice] = useState(existingData?.[docIndex]?.items_price || []);
+  const [itemsUnit, setItemsUnit] = useState(existingData?.[docIndex]?.items_unit || []);
+  const [itemsAmount, setItemsAmount] = useState<number[]>([]);
+
+  useEffect(() => {
+    // Calculate itemsAmount whenever itemsQuantity or itemsUnit changes
+    const calculateItemsAmount = itemsQuantity.map((quantity: number, index: number) => quantity * itemsUnit[index]);
+    setItemsAmount(calculateItemsAmount);
+  }, [itemsQuantity, itemsUnit]);
+
+  const generatedCustomerId = `mk-${generateShortId()}-el`;
 
   const handleClose = () => {
-    setCustomerId('');
     setName('');
     setPhoneNumber('');
     setEmail('');
@@ -82,8 +89,8 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
     setDescOfWork('');
     setItemsDesc(['']);
     setItemsQuantity([]);
-    setItemsUnit(['']);
-    setItemsPrice([]);
+    setItemsUnit([]);
+    setItemsAmount([]);
     setOpen(dispatch(closeModal()));
   }
 
@@ -119,9 +126,13 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const existingCustomerIdOnEdit = existingData?.[docIndex]?.customer_id;
+    const existingCustomerEmail = documents?.find((doc: any) => doc.email === email);
+    const existingCustomerId = existingCustomerEmail?.customer_id;
+
     // Check for empty fields
     if (
-      !customerId ||
       !name ||
       !phoneNumber ||
       !email ||
@@ -132,14 +143,15 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
       !descOfWork ||
       itemsDesc.some((item: string) => !item) ||
       itemsQuantity.some((item: number | any) => !item) ||
-      itemsUnit.some((item: string) => !item) ||
-      itemsPrice.some((item: number) => !item)
+      itemsUnit.some((item: number | any) => !item)
     ) {
       alert('Please fill out all required fields.');
       return;
     }
+
+    
     const formData: FormData = {
-      customer_id: customerId,
+      customer_id: ((docId ? existingCustomerIdOnEdit : (existingCustomerEmail?.email ? existingCustomerId : generatedCustomerId))),
       name,
       phone_number: phoneNumber,
       email,
@@ -151,8 +163,9 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
       items_description: itemsDesc,
       items_quantity: itemsQuantity,
       items_unit: itemsUnit,
-      items_price: itemsPrice
+      items_amount: itemsAmount
     };
+
     if(docId) {
       dispatch(updateDocument({documentId: docId, documentData: formData}))
       toast.success("Invoice updated");
@@ -200,13 +213,6 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
               {docId ? 'Edit' : 'Add'} Invoice
             </Typography>
             <div>
-              <TextField
-                required
-                label="Custom ID"
-                size='small'
-                value={customerId}
-                onChange={(e) => setCustomerId(e.target.value)}
-              />
               <TextField
                 required
                 label="Name"
@@ -272,7 +278,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                 <div key={index}>
                   <TextField
                     required
-                    label="Items Desc"
+                    label="Item"
                     size='small'
                     multiline
                     maxRows={4}
@@ -281,7 +287,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                   />
                   <TextField
                     required
-                    label="Items Quantity"
+                    label="Item Quantity"
                     type="number"
                     size='small'
                     value={itemsQuantity[index] || ''}
@@ -289,20 +295,13 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                   />
                   <TextField
                     required
-                    label="Items Unit"
+                    label="Item Unit Price"
+                    type="number"
                     size='small'
                     value={itemsUnit[index] || ''}
                     onChange={(e) => handleChangeField(index, e.target.value, setItemsUnit, itemsUnit)}
                   />
-                  <TextField
-                    required
-                    label="Items Price"
-                    type="number"
-                    size='small'
-                    value={itemsPrice[index] || ''}
-                    onChange={(e) => handleChangeField(index, Number(e.target.value), setItemsPrice, itemsPrice)}
-                  />
-                  <Button onClick={() => handleAddField(setItemsDesc, itemsDesc)}>Add Item</Button>
+                  
                   {index > 0 && (
                     <>
                       { docId ? null : <Button onClick={() => handleRemoveField(index, setItemsDesc, itemsDesc)}>Remove Item</Button>}
@@ -310,6 +309,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                   )}
                 </div>
               ))}
+              <Button onClick={() => handleAddField(setItemsDesc, itemsDesc)}>Add Item</Button>
             </div>
             <div className='flex justify-center'>
               <button

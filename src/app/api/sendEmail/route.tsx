@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     });
 
     const mailOptions = {
-      from: 'MeekElite Cleaning Services <onboarding@resend.dev>', // Sender address
+      from: 'MeekElite Cleaning Services <meekelitecleaningservices@gmail.com>', // Sender address
       to: to, // List of receivers (can be an array)
       subject: subject, // Subject line
       html: html, // HTML body content

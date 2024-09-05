@@ -9,10 +9,10 @@ export interface DocData {
   valid_until: string;
   quote: string;
   description_of_work: string;
-  items_description: [];
-  items_quantity: [];
-  items_unit: [];
-  items_price: [];
+  items_description: string[];
+  items_quantity: number[];
+  items_unit: number[];
+  items_amount: number[];
 }
 
 export const dateFormatter = (arg: string | number | Date ) => {
@@ -29,3 +29,8 @@ export const dateFormatter = (arg: string | number | Date ) => {
     .replace(',', ''); // Remove the comma if needed
   return formattedDate;
 }
+
+export const generateShortId = () => {
+  return Math.random().toString(36).substring(2, 8);
+}
+

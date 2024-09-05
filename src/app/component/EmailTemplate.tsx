@@ -33,8 +33,13 @@ interface EmailTemplateProps {
   description_of_work: string;
   items_description: string[];
   items_quantity: number[];
-  items_unit: string[];
-  items_price: number[];
+  items_unit: number[];
+  items_amount: number[];
+  currentUser: {
+    email: string;
+    phone: string;
+    name: string;
+  };
 }
 
 export const EmailTemplate = ({
@@ -51,8 +56,11 @@ export const EmailTemplate = ({
   items_description,
   items_quantity,
   items_unit,
-  items_price,
+  items_amount,
+  currentUser,
 }: EmailTemplateProps) => {
+  console.log(currentUser && currentUser?.email)
+  const currentYear = new Date().getFullYear();
   return (
     <Html>
       <Head />
@@ -80,8 +88,9 @@ export const EmailTemplate = ({
             <Row>
               <Column>
                 <Text style={resetText}>F.C.T ABUJA</Text>
-                <Text style={resetText}>09675847583</Text>
-                <Text style={resetText}>{`MeekElite Cleaning Services <owner@gmail.com>`}</Text>
+                <Text style={resetText}>{currentUser?.phone}</Text>
+                <Text style={resetText}>{currentUser.email}</Text>
+                {/* meekelitecleaningservices@gmail.com */}
               </Column>
               <Column align="right">
                 <Heading style={h2}>QUOTATION</Heading>
@@ -154,24 +163,24 @@ export const EmailTemplate = ({
 
           <Section style={productTitleTable}>
             <Row>
-              <Column style={productTitleHeader}>
-                <Text style={productsTitle}>ITEMIZED COST</Text>
+              <Column style={{...productTitleHeader, width: "25%"}}>
+                <Text style={productsTitle}>ITEM</Text>
               </Column>
-              <Column style={productTitleHeader}>
-                <Text style={productsTitle}>QUANTITY</Text>
+              <Column style={{...productTitleHeader, width: "25%"}}>
+                <Text style={productsTitle}>QTY</Text>
               </Column>
-              <Column style={productTitleHeader}>
-                <Text style={productsTitle}>UNIT</Text>
+              <Column style={{...productTitleHeader, width: "25%"}}>
+                <Text style={productsTitle}>UNIT PRICE</Text>
               </Column>
-              <Column style={productTitleHeader}>
-                <Text style={productsTitle}>PRICE</Text>
+              <Column style={{...productTitleHeader, width: "25%"}}>
+                <Text style={productsTitle}>AMOUNT</Text>
               </Column>
             </Row>
           </Section>
 
           <Section style={{ borderBottom: "2px solid #e5e5e5", borderLeft: "2px solid #e5e5e5", borderRight: "2px solid #e5e5e5",  padding: "1%"}}>
             <Row style={itemRow}>
-              <Column style={{ width: "40%"}}>
+              <Column style={{ width: "27%" }}>
                 {items_description?.map((data, index) => (
                   <Text key={index} style={productDescription}>
                     {data}
@@ -179,7 +188,7 @@ export const EmailTemplate = ({
                   </Text>
                 ))}
               </Column>
-              <Column style={{ width: "28%"}}>
+              <Column style={{ width: "27%" }}>
                 {items_quantity?.map((data, index) => (
                   <Text key={index} style={productDescription}>
                     {data}
@@ -187,7 +196,7 @@ export const EmailTemplate = ({
                   </Text>
                 ))}
               </Column>
-              <Column style={{ width: "15%"}}>
+              <Column style={{ width: "25%" }}>
                 {items_unit?.map((data, index) => (
                   <Text key={index} style={productDescription}>
                     {data}
@@ -195,8 +204,8 @@ export const EmailTemplate = ({
                   </Text>
                 ))}
               </Column>
-              <Column style={{ width: "15%"}}>
-                {items_price?.map((data, index) => (
+              <Column style={{ width: "25%" }}>
+                {items_amount?.map((data, index) => (
                   <Text key={index} style={productDescription}>
                     {Number.isInteger(data) ? data.toFixed(2) : data}
                     <br />
@@ -212,8 +221,8 @@ export const EmailTemplate = ({
                 <Column align="right">
                   <Text style={productPriceLarge}>
                     ₦
-                    {items_price.reduce((total, price, index) => {
-                      return total + price * items_quantity[index];
+                    {items_amount.reduce((total, amount) => {
+                      return total + amount;
                     }, 0).toFixed(2)}
                   </Text>
                 </Column>
@@ -228,7 +237,12 @@ export const EmailTemplate = ({
               </Column>
               <Column style={{ borderBottom: "2px solid #e5e5e5", borderLeft: "2px solid #e5e5e5", borderRight: "2px solid #e5e5e5", display: "flex",  padding: "15px", width: "80%", }}>
                 <Text style={productPriceLarge}>SUBTOTAL</Text>
-                <Text style={productPriceLarge}>₦6776</Text>
+                <Text style={productPriceLarge}>
+                  ₦
+                  {items_amount.reduce((total, amount) => {
+                    return total + amount;
+                  }, 0).toFixed(2)}
+                </Text>
               </Column>
             </Row>
           </Section>
@@ -248,7 +262,7 @@ export const EmailTemplate = ({
                 <Text style={{...resetText, fontWeight: "bold"}}>Quotation prepared by:</Text>
               </Column>
               <Column align="right">
-                <Text style={{...resetText, fontWeight: "bold"}}>Owner</Text>
+                <Text style={{...resetText, fontWeight: "bold"}}>{currentUser?.name}</Text>
               </Column>
             </Row>
           </Section>
@@ -260,7 +274,7 @@ export const EmailTemplate = ({
               </Column>
               <Column align="right">
                 <Text style={{...resetText, fontWeight: "bold"}}>
-                  Owner
+                  
                 </Text>
               </Column>
             </Row>
@@ -292,7 +306,7 @@ export const EmailTemplate = ({
           </Section>
 
           <Text style={footerCopyright}>
-            Copyright © 2024 MeekElite Cleaning Services. All rights reserved.
+            Copyright © {currentYear} MeekElite Cleaning Services. All rights reserved.
           </Text>
         </Container>
       </Body>

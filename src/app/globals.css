@@ -23,7 +23,7 @@
 }
 
 body::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 body::-webkit-scrollbar-track {
@@ -38,7 +38,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 body {
-  background: linear-gradient(90deg, #6bbdf7, #0078cc);
+  background: linear-gradient(90deg, #6bbdf7, #0078cc) !important;
   background-size: cover;
   background-attachment: fixed;
   overflow-x: hidden;
@@ -46,7 +46,7 @@ body {
 
 @media (max-width: 768px) {
   body {
-    background: linear-gradient(90deg, #6bbdf7, #0078cc);
+    background: linear-gradient(90deg, #6bbdf7, #0078cc) !important;
     background-size: contain;
     background-attachment: fixed;
   }

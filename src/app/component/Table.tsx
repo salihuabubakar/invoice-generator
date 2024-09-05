@@ -13,6 +13,8 @@ import EmailTemplate from './EmailTemplate';
 import { render } from '@react-email/components';
 import axios from 'axios';
 import PopUpText from './PopUpText';
+import useCurrentUser from '@/hook/getCurrentUser';
+
 
 
 interface EmailTemplateProps {
@@ -28,8 +30,8 @@ interface EmailTemplateProps {
   description_of_work: string;
   items_description: string[];
   items_quantity: number[];
-  items_unit: string[];
-  items_price: number[];
+  items_unit: number[];
+  items_amount: number[];
 }
 
 const poppins = Poppins({
@@ -44,6 +46,8 @@ const Table = () =>{
     process.env.NEXT_PUBLIC_APPWRITE_COLLECTION_ID as string
   );
 
+  const { currentUser } = useCurrentUser();
+
   const dispatch = useAppDispatch();
   const isModalOpen = useAppSelector((state) => state.modal.open);
 
@@ -54,9 +58,7 @@ const Table = () =>{
     }
   },[error])
 
-  const [users] = useState(data);
   const [search, setSearch] = useState("");
-  const [sorted, setSorted] = useState({ reversed: false });
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(10);
   const [docId, setDocId] = useState<string>('');
@@ -79,37 +81,6 @@ const Table = () =>{
     setExistingData(documents);
     dispatch(openModal());
   }
-
-    //-----------------------------START Sort Table Function---------------------------
-    const sortFunction = (e: any) => {
-      const usersCopy = users;
-  
-      //Sort First Name Column
-      if (e === "sortByName") {
-        usersCopy.sort((a, b) => {
-          if (sorted.reversed) {
-            //Descending
-            return b.first_name.localeCompare(a.first_name);
-          }
-          //Ascending
-          return a.first_name.localeCompare(b.first_name);
-        });
-        setSorted({ reversed: !sorted.reversed });
-      }
-  
-      //Sort Last Name Column
-      else if (e === "sortByLastName") {
-        usersCopy.sort((a, b) => {
-          if (sorted.reversed) {
-            return b.last_name.localeCompare(a.last_name);
-          }
-          return a.last_name.localeCompare(b.last_name);
-        });
-        setSorted({ reversed: !sorted.reversed });
-      }
-    };
-  
-    //-----------------------------END Sort Table Function-----------------------------
 
       //-----------------------------START PAGINATION Table Function---------------------
   let paginationBtn = [];
@@ -159,7 +130,8 @@ const Table = () =>{
           items_description={data.items_description}
           items_quantity={data.items_quantity}
           items_unit={data.items_unit}
-          items_price={data.items_price}
+          items_amount={data.items_amount}
+          currentUser={currentUser}
         />
       ),
     }
@@ -196,7 +168,7 @@ const Table = () =>{
       <div className='flex justify-between'>
         <input 
           className="flex rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-8 w-40 lg:w-64" 
-          placeholder="Search..." 
+          placeholder="Search... email, customer id, name" 
           type="search"
           onChange={searchFn}
         />
@@ -245,16 +217,16 @@ const Table = () =>{
               <div>Desc of work</div>
             </th>
             <th className="text-left font-medium px-3 text-xs h-8"> 
-              <div>Items Desc</div>
+              <div>Items</div>
             </th>
             <th className="text-left font-medium px-3 text-xs h-8"> 
-              <div>Items Quantity</div>
+              <div>Quantity</div>
             </th>
             <th className="text-left font-medium px-3 text-xs h-8"> 
-              <div>Items Unit</div>
+              <div>Unit Price</div>
             </th>
             <th className="text-left font-medium px-3 text-xs h-8"> 
-              <div>Items Price</div>
+              <div>Amount</div>
             </th>
             <th className="text-left font-medium px-3 text-xs h-8">
               <div>Action</div>
@@ -277,7 +249,7 @@ const Table = () =>{
                   $id, name, customer_id, phone_number, 
                   email, address, date, valid_until, 
                   description_of_work, quote, items_description, 
-                  items_price, items_quantity, items_unit
+                  items_amount, items_quantity, items_unit
                 } = docs;
                 return (
                   <tr 
@@ -350,7 +322,7 @@ const Table = () =>{
                         className={`p-2 align-middle text-left text-sm max-w-[10.25rem] truncate font-medium ${poppins.className}`}
                         style={{ opacity: 1, position: 'relative', width: '150px', zIndex: 0 }}
                         >
-                          {items_price?.map((data: any, index) => (
+                          {items_amount?.map((data: any, index) => (
                             <span key={index}>
                               <PopUpText text={Number.isInteger(data) ? data.toFixed(2) : data} />
                               <br />
@@ -409,7 +381,18 @@ const Table = () =>{
                             className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
                             >
                               {
-                                (emailSendingState && docId === $id)  ? '...' : 
+                                (emailSendingState && docId === $id)  ? (
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" color="#ffffff" fill="none">
+                                    <path d="M12 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M12 18V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M21 12L18 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M6 12L3 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M18.3635 5.63672L16.2422 7.75804" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M7.75804 16.2422L5.63672 18.3635" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M18.3635 18.3635L16.2422 16.2422" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M7.75804 7.75804L5.63672 5.63672" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                  </svg>
+                                ) : 
                                 (
                                   <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M13.75 7.81256C13.75 7.50544 13.7467 6.88575 13.7401 6.57775C13.6993 4.66179 13.6789 3.70381 12.9719 2.99416C12.2649 2.28452 11.2811 2.2598 9.31325 2.21036C8.10044 2.17988 6.89956 2.17988 5.68676 2.21035C3.71896 2.25979 2.73505 2.28451 2.02809 2.99416C1.32114 3.7038 1.30071 4.66178 1.25985 6.57775C1.24671 7.19381 1.24672 7.80619 1.25986 8.42225C1.30071 10.3383 1.32114 11.2962 2.0281 12.0059C2.73505 12.7155 3.71896 12.7402 5.68677 12.7896C6.18849 12.8023 6.68819 12.8096 7.1875 12.8118" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -433,15 +416,15 @@ const Table = () =>{
       {/* End Table */}
       <div className='flex justify-end mt-2'>
         {/* Start Pagination Buttons */}
-        <div className='flex items-center p-2'>
-          <p className='whitespace-nowrap text-sm font-medium'>Rows per page</p>
-        <input 
-          className="rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-8 w-10 lg:w-20" 
-          value={postsPerPage}
-          type="number"
-          min={1}
-          onChange={paginationFn}
-        />
+        <div className='flex items-center p-2 justify-center'>
+          <p className='whitespace-nowrap flex items-center text-sm font-medium'>Rows per page</p>
+          <input 
+            className="rounded-md ml-[5px] mt-[-13px] flex items-center border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-8 w-10 lg:w-20" 
+            value={postsPerPage}
+            type="number"
+            min={1}
+            onChange={paginationFn}
+          />
         </div>
         <p className='whitespace-nowrap text-sm font-medium flex items-center'>Page {currentPage} of {paginationBtn.length}</p>
         <button
@@ -468,6 +451,7 @@ const Table = () =>{
           docIndex={docIndex}
           existingData={existingData}
           dispatch={dispatch}
+          documents={documents}
         />
       )}
     </div>

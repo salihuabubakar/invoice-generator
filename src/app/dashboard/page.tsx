@@ -1,10 +1,8 @@
 "use client";
 import React from 'react';
-import getCurrentUser from "../../hook/getCurrentUser";
 import Header from '../component/Header';
 import Table from '../component/Table';
 import { Space_Grotesk } from "next/font/google";
-import EmailTemplate from '../component/EmailTemplate';
 
 const space_grotesk = Space_Grotesk({
   weight: '700',
@@ -12,8 +10,6 @@ const space_grotesk = Space_Grotesk({
 })
 
 const Dashboard = () => {
-  const { currentUser, loading } = getCurrentUser();
-
   return (
     <>
       <Header />
