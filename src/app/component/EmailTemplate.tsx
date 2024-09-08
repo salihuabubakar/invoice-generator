@@ -89,8 +89,7 @@ export const EmailTemplate = ({
               <Column>
                 <Text style={resetText}>F.C.T ABUJA</Text>
                 <Text style={resetText}>{currentUser?.phone}</Text>
-                <Text style={resetText}>{currentUser.email}</Text>
-                {/* meekelitecleaningservices@gmail.com */}
+                <Text style={resetText}>meekelitecleaningservices@gmail.com</Text>
               </Column>
               <Column align="right">
                 <Heading style={h2}>QUOTATION</Heading>
