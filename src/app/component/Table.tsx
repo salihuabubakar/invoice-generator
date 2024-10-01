@@ -14,6 +14,8 @@ import { render } from '@react-email/components';
 import axios from 'axios';
 import PopUpText from './PopUpText';
 import useCurrentUser from '@/hook/getCurrentUser';
+import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
+import PdfTemplate from './PdfTemplate';
 
 
 
@@ -77,7 +79,7 @@ const Table = () =>{
   // Edit function
   const handleEdit = (id: string, index: number) => {
     setDocId(id);
-    setDocIndex(index);
+    setDocIndex((currentPage - 1) * postsPerPage + index);
     setExistingData(documents);
     dispatch(openModal());
   }
@@ -251,12 +253,13 @@ const Table = () =>{
                   description_of_work, quote, items_description, 
                   items_amount, items_quantity, items_unit
                 } = docs;
+                const actualIndex = (currentPage - 1) * postsPerPage + index + 1;
                 return (
                   <tr 
                     className='border-b'
                     key={$id}>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
-                        <PopUpText text={index + 1} />
+                        <PopUpText text={actualIndex} />
                       </td>
                       <td className={`p-2 align-middle text-left text-sm max-w-[5.25rem] truncate font-medium ${poppins.className}`}>
                         <PopUpText text={customer_id} />
@@ -363,16 +366,32 @@ const Table = () =>{
 
                           </button>
                           <button
-                            title='Print'
-                            onClick={() => alert("Coming Soon..")}
+                            title='Download'
                             className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
                             >
-                              <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.59623 11.25C3.26928 11.25 2.6058 11.25 2.13343 10.9668C1.82471 10.7816 1.57599 10.5169 1.41547 10.2026C1.16987 9.72169 1.23589 9.08581 1.36793 7.81406C1.47815 6.75244 1.53326 6.22159 1.80428 5.83176C1.98221 5.57581 2.22287 5.36602 2.50498 5.22096C2.93468 5 3.48853 5 4.59623 5H10.4038C11.5115 5 12.0653 5 12.495 5.22096C12.7771 5.36602 13.0178 5.57581 13.1958 5.83176C13.4668 6.22159 13.5219 6.75244 13.6321 7.81406C13.7641 9.08581 13.8301 9.72169 13.5845 10.2026C13.424 10.5169 13.1753 10.7816 12.8666 10.9668C12.3942 11.25 11.7308 11.25 10.4038 11.25" stroke="white" stroke-width="1.5"/>
-                                <path d="M10.625 5V3.75C10.625 2.57149 10.625 1.98223 10.2589 1.61612C9.89275 1.25 9.3035 1.25 8.125 1.25H6.875C5.69649 1.25 5.10723 1.25 4.74112 1.61612C4.375 1.98223 4.375 2.57149 4.375 3.75V5" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-                                <path d="M8.74294 10H6.25706C5.82876 10 5.61461 10 5.43239 10.0681C5.18944 10.1588 4.98141 10.335 4.84138 10.5687C4.73634 10.744 4.68441 10.9694 4.58053 11.4202C4.41821 12.1247 4.33705 12.4769 4.39224 12.7593C4.46584 13.1359 4.69523 13.4546 5.01408 13.6234C5.25321 13.75 5.58783 13.75 6.25706 13.75H8.74294C9.41219 13.75 9.74681 13.75 9.98594 13.6234C10.3048 13.4546 10.5342 13.1359 10.6078 12.7593C10.6629 12.4769 10.5818 12.1247 10.4195 11.4202C10.3156 10.9694 10.2636 10.744 10.1586 10.5687C10.0186 10.335 9.81056 10.1588 9.56763 10.0681C9.38538 10 9.17125 10 8.74294 10Z" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-                                <path d="M11.25 7.5H11.256" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                              </svg>
+                              <PDFDownloadLink 
+                                document={
+                                  <PdfTemplate
+                                    $id={$id} 
+                                    customer_id={customer_id} 
+                                    name={name} 
+                                    phone_number={phone_number}
+                                    email={email}
+                                    address={address}
+                                    date={date}
+                                    valid_until={valid_until}
+                                    quote={quote} 
+                                    description_of_work={description_of_work} 
+                                    items_description={items_description}
+                                    items_quantity={items_quantity}
+                                    items_unit={items_unit}
+                                    items_amount={items_amount}
+                                    currentUser={currentUser}
+                                  />
+                                } 
+                                fileName={`${name} ${customer_id} document.pdf`}>
+                                {DownloadLinkContent}
+                              </PDFDownloadLink>
                           </button>
                           <button
                             title='Send to email'
@@ -458,3 +477,40 @@ const Table = () =>{
   );
 }
 export default Table;
+
+const DownloadLinkContent = (
+  <span>
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 15 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4.59623 11.25C3.26928 11.25 2.6058 11.25 2.13343 10.9668C1.82471 10.7816 1.57599 10.5169 1.41547 10.2026C1.16987 9.72169 1.23589 9.08581 1.36793 7.81406C1.47815 6.75244 1.53326 6.22159 1.80428 5.83176C1.98221 5.57581 2.22287 5.36602 2.50498 5.22096C2.93468 5 3.48853 5 4.59623 5H10.4038C11.5115 5 12.0653 5 12.495 5.22096C12.7771 5.36602 13.0178 5.57581 13.1958 5.83176C13.4668 6.22159 13.5219 6.75244 13.6321 7.81406C13.7641 9.08581 13.8301 9.72169 13.5845 10.2026C13.424 10.5169 13.1753 10.7816 12.8666 10.9668C12.3942 11.25 11.7308 11.25 10.4038 11.25"
+        stroke="white"
+        strokeWidth="1.5"
+      />
+      <path
+        d="M10.625 5V3.75C10.625 2.57149 10.625 1.98223 10.2589 1.61612C9.89275 1.25 9.3035 1.25 8.125 1.25H6.875C5.69649 1.25 5.10723 1.25 4.74112 1.61612C4.375 1.98223 4.375 2.57149 4.375 3.75V5"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M8.74294 10H6.25706C5.82876 10 5.61461 10 5.43239 10.0681C5.18944 10.1588 4.98141 10.335 4.84138 10.5687C4.73634 10.744 4.68441 10.9694 4.58053 11.4202C4.41821 12.1247 4.33705 12.4769 4.39224 12.7593C4.46584 13.1359 4.69523 13.4546 5.01408 13.6234C5.25321 13.75 5.58783 13.75 6.25706 13.75H8.74294C9.41219 13.75 9.74681 13.75 9.98594 13.6234C10.3048 13.4546 10.5342 13.1359 10.6078 12.7593C10.6629 12.4769 10.5818 12.1247 10.4195 11.4202C10.3156 10.9694 10.2636 10.744 10.1586 10.5687C10.0186 10.335 9.81056 10.1588 9.56763 10.0681C9.38538 10 9.17125 10 8.74294 10Z"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.25 7.5H11.256"
+        stroke="white"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </span>
+);

@@ -11,7 +11,7 @@ const space_grotesk = Space_Grotesk({
 
 const Dashboard = () => {
   return (
-    <>
+    <div style={{ border: "1px solid transparent"}}>
       <Header />
       <div className='dashboard boarder rounded shadow-md'>
         <div className='add_invoice_div mb-2'>
@@ -19,7 +19,7 @@ const Dashboard = () => {
         </div>
         <Table />
       </div>
-    </>
+    </div>
   );
 };
 

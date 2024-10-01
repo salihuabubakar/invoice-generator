@@ -62,7 +62,7 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!name || !phone || !email || !oldPassword) {
-      alert('Please fill out all required fields.');
+      alert('Please fill out all required fields. Current password is required in other to be able to update any field.');
       return;
     }
     try {

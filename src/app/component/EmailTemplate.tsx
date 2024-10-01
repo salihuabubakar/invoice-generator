@@ -113,7 +113,6 @@ export const EmailTemplate = ({
                     </Column>
                   </Row>
                 </Section>
-
                 <Section>
                   <Row>
                     <Column style={quoteHead}>
@@ -234,18 +233,13 @@ export const EmailTemplate = ({
               <Column style={quoteHead}>
                 <Text style={{ borderSpacing: "0px", color: "#ffff", backgroundColor: "#019CDE", borderRadius: "3px", fontSize: "12px", fontWeight: "700", width: "40%", padding: "2% 0", marginRight: "380px"}}>TERMS AND CONDITION</Text>
               </Column>
-              <Column style={{ borderBottom: "2px solid #e5e5e5", borderLeft: "2px solid #e5e5e5", borderRight: "2px solid #e5e5e5", display: "flex",  padding: "15px", width: "80%", }}>
-                <Text style={productPriceLarge}>SUBTOTAL</Text>
-                <Text style={productPriceLarge}>
-                  ₦
-                  {items_amount.reduce((total, amount) => {
-                    return total + amount;
-                  }, 0).toFixed(2)}
-                </Text>
+              <Column style={{ display: "flex",  padding: "15px", width: "80%", }}>
+                <Text style={{width: "109.03px"}}></Text>
+                <Text style={{width: "109.03px"}}></Text>
               </Column>
             </Row>
           </Section>
-
+          
           <Section style={{ marginBottom: "5%"}}>
             <Column style={tableCell}>
               <Text style={{...resetText, fontWeight: "bold"}}>This quote is valid for 10Days.</Text>
