@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Data as data } from './Data';
 import { useState } from "react";
 import { Poppins } from "next/font/google";
 import useDocument from "../../hook/useDocument";
@@ -35,6 +34,7 @@ interface EmailTemplateProps {
   items_unit: number[];
   items_amount: number[];
 }
+
 
 const poppins = Poppins({
   weight: '400',
@@ -342,8 +342,8 @@ const Table = () =>{
                             className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
                             >
                               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10.1338 3.11399L11.0099 2.23789C11.4937 1.75404 12.2782 1.75404 12.7621 2.23789C13.2459 2.72175 13.2459 3.50624 12.7621 3.99009L11.886 4.86619M10.1338 3.11399L6.86262 6.38519C6.20933 7.0385 5.88266 7.36512 5.66023 7.76319C5.43779 8.16125 5.214 9.10119 5 10C5.89881 9.786 6.83875 9.56219 7.23681 9.33975C7.63487 9.11731 7.9615 8.79069 8.61481 8.13737L11.886 4.86619M10.1338 3.11399L11.886 4.86619" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M13.125 7.5C13.125 10.1516 13.125 11.4775 12.3012 12.3012C11.4775 13.125 10.1516 13.125 7.5 13.125C4.84835 13.125 3.52252 13.125 2.69876 12.3012C1.875 11.4775 1.875 10.1516 1.875 7.5C1.875 4.84835 1.875 3.52252 2.69876 2.69876C3.52252 1.875 4.84835 1.875 7.5 1.875" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M10.1338 3.11399L11.0099 2.23789C11.4937 1.75404 12.2782 1.75404 12.7621 2.23789C13.2459 2.72175 13.2459 3.50624 12.7621 3.99009L11.886 4.86619M10.1338 3.11399L6.86262 6.38519C6.20933 7.0385 5.88266 7.36512 5.66023 7.76319C5.43779 8.16125 5.214 9.10119 5 10C5.89881 9.786 6.83875 9.56219 7.23681 9.33975C7.63487 9.11731 7.9615 8.79069 8.61481 8.13737L11.886 4.86619M10.1338 3.11399L11.886 4.86619" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M13.125 7.5C13.125 10.1516 13.125 11.4775 12.3012 12.3012C11.4775 13.125 10.1516 13.125 7.5 13.125C4.84835 13.125 3.52252 13.125 2.69876 12.3012C1.875 11.4775 1.875 10.1516 1.875 7.5C1.875 4.84835 1.875 3.52252 2.69876 2.69876C3.52252 1.875 4.84835 1.875 7.5 1.875" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
                               </svg>
 
                           </button>
@@ -358,10 +358,10 @@ const Table = () =>{
                             className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-[#FE4066] shadow-md hover:bg-[#f75878] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
                             >
                               <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12.1875 3.4375L11.8002 9.70319C11.7012 11.304 11.6517 12.1044 11.2505 12.6799C11.0521 12.9644 10.7967 13.2046 10.5004 13.385C9.90131 13.75 9.09937 13.75 7.49544 13.75C5.88945 13.75 5.08644 13.75 4.48691 13.3843C4.1905 13.2036 3.935 12.963 3.73668 12.678C3.33555 12.1016 3.28716 11.3001 3.19038 9.697L2.8125 3.4375" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M1.875 3.4375H13.125M10.0348 3.4375L9.60819 2.55733C9.32475 1.97266 9.183 1.68033 8.93856 1.49801C8.88437 1.45756 8.82694 1.42159 8.76688 1.39044C8.49619 1.25 8.17131 1.25 7.52156 1.25C6.8555 1.25 6.5225 1.25 6.2473 1.39632C6.18631 1.42876 6.12811 1.46619 6.07331 1.50823C5.82602 1.69794 5.68789 2.00097 5.41163 2.60704L5.03308 3.4375" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M5.9375 10.3125V6.5625" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M9.0625 10.3125V6.5625" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M12.1875 3.4375L11.8002 9.70319C11.7012 11.304 11.6517 12.1044 11.2505 12.6799C11.0521 12.9644 10.7967 13.2046 10.5004 13.385C9.90131 13.75 9.09937 13.75 7.49544 13.75C5.88945 13.75 5.08644 13.75 4.48691 13.3843C4.1905 13.2036 3.935 12.963 3.73668 12.678C3.33555 12.1016 3.28716 11.3001 3.19038 9.697L2.8125 3.4375" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                                <path d="M1.875 3.4375H13.125M10.0348 3.4375L9.60819 2.55733C9.32475 1.97266 9.183 1.68033 8.93856 1.49801C8.88437 1.45756 8.82694 1.42159 8.76688 1.39044C8.49619 1.25 8.17131 1.25 7.52156 1.25C6.8555 1.25 6.5225 1.25 6.2473 1.39632C6.18631 1.42876 6.12811 1.46619 6.07331 1.50823C5.82602 1.69794 5.68789 2.00097 5.41163 2.60704L5.03308 3.4375" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                                <path d="M5.9375 10.3125V6.5625" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                                <path d="M9.0625 10.3125V6.5625" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
                               </svg>
 
                           </button>
@@ -402,21 +402,21 @@ const Table = () =>{
                               {
                                 (emailSendingState && docId === $id)  ? (
                                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" color="#ffffff" fill="none">
-                                    <path d="M12 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M12 18V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M21 12L18 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M6 12L3 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M18.3635 5.63672L16.2422 7.75804" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M7.75804 16.2422L5.63672 18.3635" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M18.3635 18.3635L16.2422 16.2422" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                                    <path d="M7.75804 7.75804L5.63672 5.63672" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                    <path d="M12 3V6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M12 18V21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M21 12L18 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M6 12L3 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M18.3635 5.63672L16.2422 7.75804" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M7.75804 16.2422L5.63672 18.3635" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M18.3635 18.3635L16.2422 16.2422" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                                    <path d="M7.75804 7.75804L5.63672 5.63672" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                                   </svg>
                                 ) : 
                                 (
                                   <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13.75 7.81256C13.75 7.50544 13.7467 6.88575 13.7401 6.57775C13.6993 4.66179 13.6789 3.70381 12.9719 2.99416C12.2649 2.28452 11.2811 2.2598 9.31325 2.21036C8.10044 2.17988 6.89956 2.17988 5.68676 2.21035C3.71896 2.25979 2.73505 2.28451 2.02809 2.99416C1.32114 3.7038 1.30071 4.66178 1.25985 6.57775C1.24671 7.19381 1.24672 7.80619 1.25986 8.42225C1.30071 10.3383 1.32114 11.2962 2.0281 12.0059C2.73505 12.7155 3.71896 12.7402 5.68677 12.7896C6.18849 12.8023 6.68819 12.8096 7.1875 12.8118" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M1.25 3.75L5.57064 6.20289C7.14919 7.09906 7.85081 7.09906 9.42937 6.20289L13.75 3.75" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-                                    <path d="M13.75 10.9375H8.75M13.75 10.9375C13.75 10.4999 12.5036 9.68219 12.1875 9.375M13.75 10.9375C13.75 11.3751 12.5036 12.1928 12.1875 12.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M13.75 7.81256C13.75 7.50544 13.7467 6.88575 13.7401 6.57775C13.6993 4.66179 13.6789 3.70381 12.9719 2.99416C12.2649 2.28452 11.2811 2.2598 9.31325 2.21036C8.10044 2.17988 6.89956 2.17988 5.68676 2.21035C3.71896 2.25979 2.73505 2.28451 2.02809 2.99416C1.32114 3.7038 1.30071 4.66178 1.25985 6.57775C1.24671 7.19381 1.24672 7.80619 1.25986 8.42225C1.30071 10.3383 1.32114 11.2962 2.0281 12.0059C2.73505 12.7155 3.71896 12.7402 5.68677 12.7896C6.18849 12.8023 6.68819 12.8096 7.1875 12.8118" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M1.25 3.75L5.57064 6.20289C7.14919 7.09906 7.85081 7.09906 9.42937 6.20289L13.75 3.75" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+                                    <path d="M13.75 10.9375H8.75M13.75 10.9375C13.75 10.4999 12.5036 9.68219 12.1875 9.375M13.75 10.9375C13.75 11.3751 12.5036 12.1928 12.1875 12.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                                   </svg>
                                 )
                               }

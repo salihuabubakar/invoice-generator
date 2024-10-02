@@ -1,15 +1,15 @@
+"use client";
 /* eslint-disable jsx-a11y/alt-text */
 import { Document, Page, Text, View, Image, StyleSheet, Font } from '@react-pdf/renderer';
 import { dateFormatter } from '@/utils/data_types';
 
-import RobotoBold from '../../../public/Roboto/Roboto-Bold.ttf';
-import RobotoLight from '../../../public/Roboto/Roboto-Light.ttf';
+
 // Register fonts
 Font.register({
   family: 'Roboto',
   fonts: [
-    { src: RobotoBold, fontWeight: 700 },
-    { src: RobotoLight, fontWeight: 300 },
+    { src: '/fonts/Roboto-Bold.ttf', fontWeight: 700 },
+    { src: '/fonts/Roboto-Light.ttf', fontWeight: 300 },
   ],
 });
 
