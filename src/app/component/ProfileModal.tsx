@@ -22,7 +22,8 @@ const style = {
   p: 4,
   maxHeight: '90vh',
   overflowY: 'auto',
-  '& .MuiTextField-root': { m: 1, width: '27ch' }
+  maxWidth: "700px",
+  width: "95%",
 };
 
 interface Props {
@@ -116,48 +117,53 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
               </button>
             </div>
             <div className='flex flex-col w-full'>
-              <div className='mb-2'>
+              <div className='mb-2 row'>
                 <TextField
                   required
-                  label="Name"
+                  placeholder="Name"
                   size='small'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  className="col-sm-6"
                 />
                 <TextField
                   required
-                  label="Email"
+                  placeholder="Email"
                   size='small'
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="col-sm-6"
                 />
               </div>
-              <div>
+              <div className='row'>
                 <TextField
                   required
-                  label="Phone Number"
+                  placeholder="Phone Number"
                   size='small'
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  className="col-sm-6"
                 />
                 <TextField
                   required
-                  label="Current Password"
+                  placeholder="Current Password"
                   size='small'
                   type='password'
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
+                  className="col-sm-6"
                 />
               </div>
               {/* <div>
                 <TextField
                   required
-                  label="New Password"
+                  placeholder="New Password"
                   size='small'
                   type='password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  className="col-sm-6"
                 />
               </div> */}
             </div>

@@ -24,7 +24,8 @@ const style = {
   p: 4,
   maxHeight: '90vh',
   overflowY: 'auto',
-  '& .MuiTextField-root': { m: 1, width: '27ch' }
+  maxWidth: "700px",
+  width: "95%",
 };
 
 // Define a type for form data
@@ -212,35 +213,39 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
             <Typography className='text-center' id="transition-modal-title" variant="h6" component="h2">
               {docId ? 'Edit' : 'Add'} Invoice
             </Typography>
-            <div>
+            <div className='row'>
               <TextField
                 required
-                label="Name"
+                placeholder='Name'
                 size='small'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
-                label="Phone Number"
+                placeholder="Phone Number"
                 size='small'
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
-                label="Email"
+                placeholder="Email"
                 size='small'
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
-                label="Address"
+                placeholder="Address"
                 size='small'
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
@@ -249,6 +254,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
@@ -257,49 +263,55 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                 type="date"
                 value={validUntil}
                 onChange={(e) => setValidUntil(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
-                label="Quote"
+                placeholder="Quote"
                 size='small'
                 value={quote}
                 onChange={(e) => setQuote(e.target.value)}
+                className="col-sm-6"
               />
               <TextField
                 required
-                label="Desc of Work"
+                placeholder="Desc of Work"
                 size='small'
                 multiline
                 maxRows={4}
                 value={descOfWork}
                 onChange={(e) => setDescOfWork(e.target.value)}
+                className="col-sm-6"
               />
               {itemsDesc.map((item: any, index: number) => (
-                <div key={index}>
+                <React.Fragment key={index}>
                   <TextField
                     required
-                    label="Item"
+                    placeholder="Item"
                     size='small'
                     multiline
                     maxRows={4}
                     value={itemsDesc[index] || ''}
                     onChange={(e) => handleChangeField(index, e.target.value, setItemsDesc, itemsDesc)}
+                    className="col-sm-6"
                   />
                   <TextField
                     required
-                    label="Item Quantity"
+                    placeholder="Item Quantity"
                     type="number"
                     size='small'
                     value={itemsQuantity[index] || ''}
                     onChange={(e) => handleChangeField(index, Number(e.target.value), setItemsQuantity, itemsQuantity)}
+                    className="col-sm-6"
                   />
                   <TextField
                     required
-                    label="Item Unit Price"
+                    placeholder="Item Unit Price"
                     type="number"
                     size='small'
                     value={itemsUnit[index] || ''}
                     onChange={(e) => handleChangeField(index, e.target.value, setItemsUnit, itemsUnit)}
+                    className="col-sm-6"
                   />
                   
                   {index > 0 && (
@@ -307,7 +319,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
                       { docId ? null : <Button onClick={() => handleRemoveField(index, setItemsDesc, itemsDesc)}>Remove Item</Button>}
                     </>
                   )}
-                </div>
+                </React.Fragment>
               ))}
               <Button onClick={() => handleAddField(setItemsDesc, itemsDesc)}>Add Item</Button>
             </div>
