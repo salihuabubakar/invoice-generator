@@ -1,4 +1,3 @@
-// slices/profileSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { account, AppwriteException } from '../../app/appwrite';
 
@@ -17,38 +16,56 @@ export const updateProfile = createAsyncThunk(
   'profile/updateProfile',
   async (
     {
+      currentName,
+      currentEmail,
+      currentPhone,
       name,
       email,
       phone,
-      password,
       oldPassword,
-    }: { name?: string; email?: string; phone?: string; password?: string; oldPassword?: string },
+    }: {
+      currentName: string; currentEmail: string; currentPhone: string;
+      name?: string; email?: string; phone?: string; oldPassword?: string
+    },
     { rejectWithValue }
   ) => {
     try {
       const responses = [];
       
-      if (name) {
+      if (name && name !== currentName) {
         const nameResponse = await account.updateName(name);
         responses.push(nameResponse);
       }
       
-      if (email) {
+      if (email && email !== currentEmail) {
         const emailResponse = await account.updateEmail(email, oldPassword!);
         responses.push(emailResponse);
       }
 
-      if (phone) {
+      if (phone && phone !== currentPhone) {
         const phoneResponse = await account.updatePhone(phone, oldPassword!);
         responses.push(phoneResponse);
       }
-      
-      if (password && oldPassword) {
-        const passwordResponse = await account.updatePassword(password, oldPassword);
-        responses.push(passwordResponse);
-      }
 
       return responses;
+    } catch (error) {
+      if (error instanceof AppwriteException) {
+        return rejectWithValue(error.message);
+      }
+      throw error;
+    }
+  }
+);
+
+export const updatePassword = createAsyncThunk(
+  'profile/updatePassword',
+  async (
+    { password, oldPassword }: { password: string; oldPassword: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const passwordResponse = await account.updatePassword(password, oldPassword);
+      return passwordResponse;
     } catch (error) {
       if (error instanceof AppwriteException) {
         return rejectWithValue(error.message);
@@ -72,6 +89,17 @@ const profileSlice = createSlice({
         state.loading = false;
       })
       .addCase(updateProfile.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updatePassword.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload;
       });

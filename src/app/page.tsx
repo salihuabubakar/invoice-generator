@@ -10,6 +10,7 @@ const LoginPage = () => {
   const router = useRouter();
   const { currentUser } = getCurrentUser();
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,11 +51,12 @@ const LoginPage = () => {
 	    	  	<form className="login">
 	    	  		<div className="login__field">
 	    	  			<i className="login__icon fas fa-user"></i>
-	    	  			<input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="login__input" placeholder="Email" />
+	    	  			<input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="login__input col-sm-6" placeholder="Email" />
 	    	  		</div>
 	    	  		<div className="login__field">
 	    	  			<i className="login__icon fas fa-lock"></i>
-	    	  			<input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="login__input" placeholder="Password" />
+	    	  			<input value={password} onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} className="login__input col-sm-6 login_pass" placeholder="Password" />
+                <span onClick={() => setShowPassword(prev => !prev)} className='text-sm'>{showPassword ? 'Hide' : 'Show'}</span>
 	    	  		</div>
 	    	  		<button type="button" onClick={() => login(email, password)} className="button login__submit">
                 {loading ? 'Loading...' : 'Log in'}

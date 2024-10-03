@@ -9,39 +9,34 @@ import { toast } from 'react-toastify';
 import { useAppSelector } from '../../lib/hooks';
 import { closeProfile } from '@/lib/slices/profileModalSlice';
 import getCurrentUser from "../../hook/getCurrentUser";
-import { updateProfile } from '@/lib/slices/profileSlice';
-
-const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  bgcolor: 'background.paper',
-  border: '2px solid #0b5688',
-  boxShadow: 24,
-  p: 4,
-  maxHeight: '90vh',
-  overflowY: 'auto',
-  maxWidth: "700px",
-  width: "95%",
-};
+import { updateProfile, updatePassword } from '@/lib/slices/profileSlice';
+import { FormStyle } from './AddInvoice';
 
 interface Props {
   dispatch: any;
 }
 
-const ProfileModal: FC<Props> = ({ dispatch }) => {
+type Tab = 'profile' | 'password';
 
+const paddingEffect = {
+  '& .MuiInputBase-input': {
+    paddingRight: '50px', // Customize padding here
+  },
+}
+
+const ProfileModal: FC<Props> = ({ dispatch }) => {
   const isProfileModalOpen = useAppSelector((state) => state.profileModal.open);
   const { currentUser } = getCurrentUser();
   const { loading, error } = useAppSelector((state) => state.profile);
 
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [tab, setTab] = useState<Tab>('profile');
   const [open, setOpen] = useState(isProfileModalOpen);
   const [name, setName] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [oldPassword, setOldPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState<string>('');
 
   useEffect(() => {
     if (currentUser) {
@@ -60,18 +55,20 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
     setOpen(dispatch(closeProfile()));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleProfileSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name || !phone || !email || !oldPassword) {
-      alert('Please fill out all required fields. Current password is required in other to be able to update any field.');
+    if (!oldPassword) {
+      alert('Current password is required to update any field.');
       return;
     }
     try {
       await dispatch(updateProfile({ 
+        currentName: currentUser.name,
+        currentEmail: currentUser.email,
+        currentPhone: currentUser.phone,
         name,
         email,
         phone,
-        password,
         oldPassword
       })).unwrap();
       toast.success('Profile updated successfully!');
@@ -80,6 +77,30 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
     }
     handleClose();
   };
+
+  const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!oldPassword || !password) {
+      alert('Current password and new password are required.');
+      return;
+    }
+    try {
+      await dispatch(updatePassword({ 
+        password,
+        oldPassword
+      })).unwrap();
+      toast.success('Password updated successfully!');
+    } catch (err) {
+      toast.error(`Failed to update password: ${error}`);
+    }
+    handleClose();
+  };
+
+  const getTabStyles = (currentTab: Tab) => ({
+    borderBottom: tab === currentTab ? "4px solid #e5ab80" : "none",
+    borderRadius: "4px",
+    transition: "border-bottom 0.1s ease-in",
+  });
 
   return (
     <div>
@@ -98,11 +119,11 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
       >
         <Fade in={open}>
           <Box
-            sx={style}
+            sx={FormStyle}
             component="form"
             noValidate
             autoComplete="off"
-            onSubmit={handleSubmit}
+            onSubmit={tab === 'profile' ? handleProfileSubmit : handlePasswordSubmit}
           >
             <div className='flex justify-between items-center'>
               <Typography className='text-center' id="transition-modal-title" variant="h6" component="h1">
@@ -116,63 +137,101 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
                 X
               </button>
             </div>
-            <div className='flex flex-col w-full'>
-              <div className='mb-2 row'>
-                <TextField
-                  required
-                  placeholder="Name"
-                  size='small'
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="col-sm-6"
-                />
-                <TextField
-                  required
-                  placeholder="Email"
-                  size='small'
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="col-sm-6"
-                />
-              </div>
-              <div className='row'>
-                <TextField
-                  required
-                  placeholder="Phone Number"
-                  size='small'
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="col-sm-6"
-                />
-                <TextField
-                  required
-                  placeholder="Current Password"
-                  size='small'
-                  type='password'
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  className="col-sm-6"
-                />
-              </div>
-              {/* <div>
-                <TextField
-                  required
-                  placeholder="New Password"
-                  size='small'
-                  type='password'
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="col-sm-6"
-                />
-              </div> */}
+            <div className="flex mt-2">
+              <button
+                style={getTabStyles("profile")}
+                onClick={() => setTab("profile")}
+                type='button'
+                className="mr-4"
+              >
+                Profile
+              </button>
+              <button
+                style={getTabStyles("password")}
+                onClick={() => setTab("password")}
+                type='button'
+              >
+                Change Password
+              </button>
             </div>
-            <div className='flex justify-center'>
+            <div className='flex flex-col w-full'>
+              {tab === 'profile' && (
+                <>
+                  <div className='mb-2 row'>
+                    <TextField
+                      required
+                      placeholder="Name"
+                      size='small'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="col-sm-6"
+                    />
+                    <TextField
+                      required
+                      placeholder="Email"
+                      size='small'
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="col-sm-6"
+                    />
+                  </div>
+                  <div className='mb-2 row password'>
+                    <TextField
+                      required
+                      placeholder="Phone"
+                      size='small'
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="col-sm-6"
+                    />
+                      <TextField
+                        required
+                        placeholder="Current Password"
+                        size='small'
+                        type={showPassword ? 'text' : 'password'}
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                        className="col-sm-6"
+                        sx={paddingEffect}
+                      />
+                      <span onClick={() => setShowPassword(prev => !prev)} className='text-sm'>{showPassword ? 'Hide' : 'Show'}</span>
+                  </div>
+                </>
+              )}
+              {tab === 'password' && (
+                <div className='row password'>
+                  <TextField
+                    required
+                    placeholder="Current Password"
+                    size='small'
+                    type={showPassword ? 'text' : 'password'}
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    className="col-sm-6"
+                    sx={paddingEffect}
+                  />
+                  <TextField
+                    required
+                    placeholder="New Password"
+                    size='small'
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="col-sm-6"
+                    sx={paddingEffect}
+                  />
+                  <span onClick={() => setShowPassword(prev => !prev)} className='text-sm'>{showPassword ? 'Hide' : 'Show'}</span>
+                </div>
+              )}
+            </div>
+            <div className="flex justify-center items-center mt-4">
               <button
                 type="submit"
                 className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
               >
-                {loading ? 'loading...' : 'Save'}
+                {loading ? 'Updating...' : tab === 'profile' ? 'Update Profile' : 'Update Password'}
               </button>
             </div>
           </Box>

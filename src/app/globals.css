@@ -42,6 +42,7 @@ body {
   background-size: cover;
   background-attachment: fixed;
   overflow-x: hidden;
+  height: 50dvh !important;
 }
 
 @media (max-width: 768px) {
@@ -83,6 +84,7 @@ body {
   width: 80%;
   z-index: 500;
   position: relative;
+  font-family: "Roboto", system-ui;
 }
 
 .logo {
@@ -153,8 +155,30 @@ body {
 
 .login__field {
 	padding: 20px 0px;	
-	position: relative;	
+	position: relative;
+  top: -60px;
+
 }
+
+.login__field span {
+  position: absolute;
+  cursor: pointer;
+  color: #071927;
+  right: 70px;
+  top: 40px;
+  z-index: 1;
+  font-family: "Roboto", system-ui;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.login__field span:hover {
+  font-weight: 700;
+}
+
+.login_pass {
+  padding-right: 40px !important;
+} 
 
 
 .login__input {
@@ -166,6 +190,9 @@ body {
 	font-weight: 700;
 	width: 75%;
 	transition: .2s;
+  font-family: "Roboto", system-ui;
+  font-weight: 900;
+  font-style: normal;
 }
 
 .login__input:active,
@@ -368,3 +395,20 @@ input::-webkit-inner-spin-button {
 }
 
 /* Table End */
+
+
+
+.password {
+  position: relative;
+}
+
+.password span {
+  position: absolute;
+  cursor: pointer;
+  right: 10px;
+  top: 27px;
+}
+
+.password span:hover {
+  font-weight: 700;
+}

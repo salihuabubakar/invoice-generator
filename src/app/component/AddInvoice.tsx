@@ -13,7 +13,7 @@ import { toast } from 'react-toastify';
 import { dateFormatter, generateShortId } from '@/utils/data_types';
 
 
-const style = {
+export const FormStyle = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
@@ -26,6 +26,21 @@ const style = {
   overflowY: 'auto',
   maxWidth: "700px",
   width: "95%",
+  borderRadius: "8px",
+  "&::-webkit-scrollbar": {
+    width: "5px",
+  },
+  "&::-webkit-scrollbar-track": {
+    background: "#e4e4e4", // Default scrollbar track color
+  },
+  "&::-webkit-scrollbar-thumb": {
+    borderRadius: "8px",
+    backgroundImage: 'linear-gradient(90deg, #233e52, #2a77ad)',
+    boxShadow: 'inset 2px 2px 5px 0 rgba(#fff, 0.5)'
+  },
+  "&::-webkit-scrollbar-thumb:hover": {
+    background: "#2a77ad",
+  },
 };
 
 // Define a type for form data
@@ -195,7 +210,7 @@ const AddInvoice: FC<AddInvoiceProps> = ({ existingData, docId, docIndex, dispat
       >
         <Fade in={open}>
           <Box
-            sx={style}
+            sx={FormStyle}
             component="form"
             noValidate
             autoComplete="off"
