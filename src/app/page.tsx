@@ -42,7 +42,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="flex justify-center mt-[100px]">
+      <div className="screen_container">
 	      <div className="screen flex flex-col">
           <div className="logo-container">
             <Image alt="logo image" className="logo" width={370} height={380} src="/Logo.webp" />

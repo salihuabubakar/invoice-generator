@@ -97,7 +97,7 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
   };
 
   const getTabStyles = (currentTab: Tab) => ({
-    borderBottom: tab === currentTab ? "4px solid #e5ab80" : "none",
+    borderBottom: tab === currentTab ? "4px solid #2B83BE" : "none",
     borderRadius: "4px",
     transition: "border-bottom 0.1s ease-in",
   });
@@ -186,17 +186,17 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
                       onChange={(e) => setPhone(e.target.value)}
                       className="col-sm-6"
                     />
-                      <TextField
-                        required
-                        placeholder="Current Password"
-                        size='small'
-                        type={showPassword ? 'text' : 'password'}
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                        className="col-sm-6"
-                        sx={paddingEffect}
-                      />
-                      <span onClick={() => setShowPassword(prev => !prev)} className='text-sm'>{showPassword ? 'Hide' : 'Show'}</span>
+                    <TextField
+                      required
+                      placeholder="Current Password"
+                      size='small'
+                      type={showPassword ? 'text' : 'password'}
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                      className="col-sm-6"
+                      sx={paddingEffect}
+                    />
+                    <span onClick={() => setShowPassword(prev => !prev)} className='text-sm span'>{showPassword ? 'Hide' : 'Show'}</span>
                   </div>
                 </>
               )}
@@ -222,7 +222,7 @@ const ProfileModal: FC<Props> = ({ dispatch }) => {
                     className="col-sm-6"
                     sx={paddingEffect}
                   />
-                  <span onClick={() => setShowPassword(prev => !prev)} className='text-sm'>{showPassword ? 'Hide' : 'Show'}</span>
+                  <span onClick={() => setShowPassword(prev => !prev)} className='text-sm span'>{showPassword ? 'Hide' : 'Show'}</span>
                 </div>
               )}
             </div>
