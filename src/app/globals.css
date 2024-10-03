@@ -422,7 +422,7 @@ input::-webkit-inner-spin-button {
 }
 
 @media (max-width: 768px) {
-  .password span {
+  .password .span {
     top: 105px;
   }
 }
