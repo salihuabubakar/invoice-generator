@@ -13,8 +13,9 @@ import { render } from '@react-email/components';
 import axios from 'axios';
 import PopUpText from './PopUpText';
 import useCurrentUser from '@/hook/getCurrentUser';
-import { PDFDownloadLink, BlobProvider } from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import PdfTemplate from './PdfTemplate';
+import useDebouncedSearch from '@/utils/useDebouncedSearch';
 
 
 
@@ -76,6 +77,12 @@ const Table = () =>{
     }
   }, [isModalOpen]);
 
+  const clearInput = () => {
+    if (search !== "") {
+      setSearch("");
+    }
+  };
+
   // Edit function
   const handleEdit = (id: string, index: number) => {
     setDocId(id);
@@ -90,20 +97,28 @@ const Table = () =>{
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
+  const debouncedSearch = useDebouncedSearch(search, 500, (term) => {
+    setCurrentPage(1); // Reset to page 1 for new search
+  });
+
+  const filteredDocuments = documents.filter((doc) => 
+    doc.customer_id.toLowerCase().includes(debouncedSearch) ||
+    doc.name.toLowerCase().includes(debouncedSearch) ||
+    doc.email.toLowerCase().includes(debouncedSearch)
+  );
+
+  const paginatedDocuments = filteredDocuments.slice(indexOfFirstPost, indexOfLastPost);
+
   for (
     let i = 1;
-    i <= Math.ceil(documents.length / (postsPerPage ? postsPerPage : documents.length));
+    i <= Math.ceil(filteredDocuments.length / postsPerPage);
     i++
   ) {
     paginationBtn.push(i);
   }
+  
 
   //-----------------------------END PAGINATION Table Function-----------------------
-
-  const searchFn = (e: any) => {
-    setSearch(e.target.value.toLowerCase());
-    setCurrentPage(1);
-  };
   const paginationFn = (e: any) => {
     setPostsPerPage(e.target.value);
     setCurrentPage(1);
@@ -167,13 +182,19 @@ const Table = () =>{
   return (
     <div>
       {/* Start Search Input */}
-      <div className='flex justify-between'>
+      <div className='flex justify-between searchContainer'>
         <input 
-          className="flex rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-8 w-100 lg:w-64" 
+          className="flex search-input rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-8 w-100 lg:w-64" 
           placeholder="Search... email, customer id, name" 
           type="search"
-          onChange={searchFn}
+          value={search}
+          onChange={(e) => setSearch(e.target.value.toLowerCase())}
         />
+        {search !== "" && (
+          <span className="clear-icon" onClick={clearInput}>
+            <CancelIcon />
+          </span>
+        )}
         <button
           onClick={() => dispatch(openModal())}
           className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring  border border-input bg-[#2B83BE] shadow-md hover:bg-[#3cb0fd] text-[white] hover:text-accent-foreground h-8 rounded-md px-3 text-xs"
@@ -236,16 +257,9 @@ const Table = () =>{
           </tr>
         </thead>
         <tbody className='[&_tr:last-child]:border-0'>
-          {documents && documents?.length !== 0 ? (
+          {paginatedDocuments && paginatedDocuments.length > 0 ? (
             <>
-              {documents
-              .filter(
-                (doc) =>
-                  doc.customer_id.toLowerCase().includes(search) ||
-                  doc.name.toLowerCase().includes(search) ||
-                  doc.email.toLowerCase().includes(search)
-              )
-              .slice(indexOfFirstPost, indexOfLastPost) //Table (startFrom, endFrom )
+              {paginatedDocuments
               .map((docs: DocData, index: number) => {
                 const { 
                   $id, name, customer_id, phone_number, 
@@ -514,3 +528,31 @@ const DownloadLinkContent = (
     </svg>
   </span>
 );
+
+export const CancelIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      color="#FE4066"
+      fill="none"
+    >
+      <path
+        d="M6 6L18 18"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M6 18L18 6"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
